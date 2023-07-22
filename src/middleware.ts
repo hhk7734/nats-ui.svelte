@@ -1,7 +1,10 @@
-import { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
 
 export const config = {
-	matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+	matcher: ["/((?!api|_next/static|_next/image|assets|favicon.ico).*)"],
 };
 
-export function middleware(req: NextRequest) {}
+export default createMiddleware({
+	locales: ["en", "ko"],
+	defaultLocale: "en",
+});
