@@ -1,0 +1,7 @@
+servers:
+  - id: local # required
+    name: local # default: <host>:<port>
+    host: localhost # default: localhost
+    port: 4222 # default: 4222
+    # user: nats
+    # password: nats
