@@ -15,7 +15,10 @@ interface NATSServerConfig {
 }
 
 interface NATSClient {
+	id: string;
 	name: string;
+	url: string;
+
 	conn: NatsConnection;
 	jsm: JetStreamManager;
 }
@@ -33,6 +36,6 @@ export async function connect(config: NATSConfig) {
 
 		const conn = await _connect(opts);
 		const jsm = await conn.jetstreamManager();
-		clients.set(id, { name: name ? name : server, conn, jsm });
+		clients.set(id, { id, name: name ? name : server, url: server, conn, jsm });
 	}
 }
