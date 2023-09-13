@@ -14,7 +14,7 @@ interface NATSServerConfig {
 	password?: string;
 }
 
-interface NATSClient {
+interface Context {
 	id: string;
 	name: string;
 	url: string;
@@ -23,7 +23,7 @@ interface NATSClient {
 	jsm: JetStreamManager;
 }
 
-export const clients = new Map<string, NATSClient>();
+export const contexts = new Map<string, Context>();
 
 export async function connect(config: NATSConfig) {
 	for (const serverConfig of config.servers) {
@@ -36,6 +36,12 @@ export async function connect(config: NATSConfig) {
 
 		const conn = await _connect(opts);
 		const jsm = await conn.jetstreamManager();
-		clients.set(id, { id, name: name ? name : server, url: server, conn, jsm });
+		contexts.set(id, {
+			id,
+			name: name ? name : server,
+			url: server,
+			conn,
+			jsm,
+		});
 	}
 }
