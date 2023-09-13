@@ -1,14 +1,7 @@
-import { env } from "$env/dynamic/private";
-import * as fs from "fs";
-import * as yaml from "js-yaml";
 import { connect as _connect } from "nats";
 import type { NatsConnection, JetStreamManager, ConnectionOptions } from "nats";
 
-export const config = yaml.load(
-	fs.readFileSync(env.NATS_CONFIG_PATH, "utf8"),
-) as NATSConfig;
-
-interface NATSConfig {
+export interface NATSConfig {
 	servers: NATSServerConfig[];
 }
 
