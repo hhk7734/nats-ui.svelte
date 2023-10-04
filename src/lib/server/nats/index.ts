@@ -23,7 +23,11 @@ interface Context {
 	jsm: JetStreamManager;
 }
 
-export const contexts = new Map<string, Context>();
+export interface Contexts {
+	[id: string]: Context;
+}
+
+export const contexts: Contexts = {};
 
 export async function connect(config: NATSConfig) {
 	for (const serverConfig of config.servers) {
@@ -34,14 +38,19 @@ export async function connect(config: NATSConfig) {
 		if (user) opts.user = user;
 		if (password) opts.pass = password;
 
-		const conn = await _connect(opts);
-		const jsm = await conn.jetstreamManager();
-		contexts.set(id, {
-			id,
-			name: name ? name : server,
-			url: server,
-			conn,
-			jsm,
-		});
+		try {
+			const conn = await _connect(opts);
+			const jsm = await conn.jetstreamManager();
+			contexts[id] = {
+				id,
+				name: name ? name : server,
+				url: server,
+				conn,
+				jsm,
+			};
+		} catch (err) {
+			console.error(`Failed to connect to NATS server ${server}`);
+			console.error(err);
+		}
 	}
 }
