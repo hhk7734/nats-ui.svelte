@@ -1,5 +1,5 @@
-import { connect as _connect } from "nats";
-import type { NatsConnection, JetStreamManager, ConnectionOptions } from "nats";
+import { connect as _connect } from 'nats';
+import type { NatsConnection, JetStreamManager, ConnectionOptions } from 'nats';
 
 export interface NATSConfig {
 	servers: NATSServerConfig[];
@@ -46,7 +46,7 @@ export async function connect(config: NATSConfig) {
 				name: name ? name : server,
 				url: server,
 				conn,
-				jsm,
+				jsm
 			};
 		} catch (err) {
 			console.error(`Failed to connect to NATS server ${server}`);
