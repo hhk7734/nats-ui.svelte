@@ -1,16 +1,21 @@
 <script>
-  import { page } from "$app/stores";
-
-  export let data;
+	export let data;
 </script>
 
-<main class="flex flex-col gap-4">
-  {$page.url.pathname}
-  <p class="whitespace-normal" style="line-break: anywhere;">
-    {JSON.stringify(data.msg)}
-  </p>
-  <div>{atob(data.msg?.smr.message.data)}</div>
-</main>
-
-<style>
-</style>
+<div class="flex flex-col gap-4">
+	{#each data.msgs as msg}
+		<ul>
+			<li>{msg.subject}</li>
+			<li>
+				<ul>
+					{#each msg.header as { key, value }}
+						<li>{key}:{value}</li>
+					{/each}
+				</ul>
+			</li>
+			<li>{msg.seq}</li>
+			<li>{msg.data}</li>
+			<li>{msg.time}</li>
+		</ul>
+	{/each}
+</div>

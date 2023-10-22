@@ -1,13 +1,13 @@
-import { contexts } from '$lib/server/nats';
+import { clients } from '$lib/server/nats';
 
 export async function load({ params }) {
-	if (!Object.hasOwn(contexts, params.context)) {
+	if (!Object.hasOwn(clients, params.context)) {
 		return {
 			streams: []
 		};
 	}
 
 	return {
-		streams: await contexts[params.context].jsm.streams.list().next()
+		streams: await clients[params.context].jsm.streams.list().next()
 	};
 }

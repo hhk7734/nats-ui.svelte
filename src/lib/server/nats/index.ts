@@ -18,7 +18,9 @@ interface Context {
 	id: string;
 	name: string;
 	url: string;
+}
 
+interface Client {
 	conn: NatsConnection;
 	jsm: JetStreamManager;
 }
@@ -27,11 +29,25 @@ export interface Contexts {
 	[id: string]: Context;
 }
 
+export interface Clients {
+	[id: string]: Client;
+}
+
 export const contexts: Contexts = {};
+export const clients: Clients = {};
 
 export async function connect(config: NATSConfig) {
 	for (const serverConfig of config.servers) {
-		const { id, name, host, port, user, password } = serverConfig;
+		const { id, name, host, port } = serverConfig;
+		contexts[id] = {
+			id,
+			name: name ? name : `${host}:${port}`,
+			url: `${host}:${port}`
+		};
+	}
+
+	for (const serverConfig of config.servers) {
+		const { id, host, port, user, password } = serverConfig;
 		const server = `${host}:${port}`;
 
 		const opts = { servers: [server] } as ConnectionOptions;
@@ -41,10 +57,7 @@ export async function connect(config: NATSConfig) {
 		try {
 			const conn = await _connect(opts);
 			const jsm = await conn.jetstreamManager();
-			contexts[id] = {
-				id,
-				name: name ? name : server,
-				url: server,
+			clients[id] = {
 				conn,
 				jsm
 			};

@@ -1,13 +1,7 @@
 <script>
-  export let data;
-
-  console.log(data.contexts);
+	export let data;
 </script>
 
-<main>
-  {#each data.contexts as context}
-    <div >{context.id}</div>
-  {/each}
-</main>
-
-<style></style>
+{#each Object.values(data.contexts) as context}
+	<a href={`/contexts/${context.id}`}>{context.name}</a>
+{/each}
